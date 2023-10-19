@@ -1,0 +1,3 @@
+D2: elemento di ricerca dei post aventi "x" nel titolo
+D5: inviare e-mail quando un utente si registra e quando invia un post
+D6: registrazione 1:00:00 
