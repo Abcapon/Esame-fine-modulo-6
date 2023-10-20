@@ -4,9 +4,7 @@ const AvatarModifier = () => {
 	const [formData, setFormData] = useState({
 		authorId: "",
 	});
-	console.log(formData);
 	const [avatar, setAvatar] = useState(null);
-	console.log(avatar);
 
 	const handleFileChange = (e) => {
 		setAvatar(e.target.files[0]);

@@ -8,8 +8,6 @@ const LogIn = () => {
 
 	const navigate = useNavigate();
 
-	console.log(login);
-
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 

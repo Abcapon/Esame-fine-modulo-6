@@ -16,10 +16,13 @@ const AddPostForm = () => {
 			// lato backend abbiamo la possibilità di "caricare" il nostro file sia nel localstorage che in cloudinary
 			// per utilizzare il local storage, nella chiamata seguente dobbiamo utilizzare l'URL: http://localhost:5050/posts/upload,
 			// mentre per utilizzare cloudinary dobbiamo utilizzare la stringa : http://localhost:5050/posts/cloudinary
-			const response = await fetch("http://localhost:5050/posts/cloudinary", {
-				method: "POST",
-				body: fileData,
-			});
+			const response = await fetch(
+				`${process.env.REACT_APP_SERVER_BASE_URL}/posts/cloudinary`,
+				{
+					method: "POST",
+					body: fileData,
+				}
+			);
 			return await response.json();
 		} catch (error) {
 			console.log("Errore in handleUploadFile:", error);

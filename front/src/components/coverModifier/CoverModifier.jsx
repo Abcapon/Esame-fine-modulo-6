@@ -4,9 +4,8 @@ const CoverModifier = () => {
 	const [formData, setFormData] = useState({
 		postId: "",
 	});
-	console.log(formData);
+
 	const [cover, setCover] = useState(null);
-	console.log(cover);
 
 	const handleFileChange = (e) => {
 		setCover(e.target.files[0]);
@@ -32,7 +31,7 @@ const CoverModifier = () => {
 
 		try {
 			const response = await fetch(
-				`http://localhost:5050/posts/${postId}/cover`,
+				`${process.env.REACT_APP_SERVER_BASE_URL}/posts/${postId}/cover`,
 				{
 					method: "PATCH",
 					body: fileData,

@@ -45,4 +45,58 @@ login.post(`/login`, async (req, res) => {
 	});
 });
 
+login.get(`/login`, (req, res) => {
+	const token = req.header("loggedInUser");
+
+	if (!token) {
+		return res.status(401).send({
+			message: "Token mancante",
+			statusCode: 401,
+		});
+	}
+
+	jwt.verify(token, process.env.JWT_SECRET, (err) => {
+		if (err) {
+			return res.status(401).send({
+				message: "Token non valido",
+				statusCode: 401,
+			});
+		}
+
+		res.status(200).send({
+			message: "Token recuperato con successo",
+			statusCode: 200,
+			token,
+		});
+	});
+});
+
+login.get(`/me`, async (req, res) => {
+	const token = req.header("loggedInUser");
+
+	if (!token) {
+		return res.status(401).send({
+			message: "Token mancante",
+			statusCode: 401,
+		});
+	}
+
+	jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(401).send({
+				message: "Token non valido",
+				statusCode: 401,
+			});
+		}
+
+		const userData = decoded;
+
+		res.status(200).send({
+			message: "Token recuperato con successo",
+			statusCode: 200,
+			userData,
+		});
+	});
+});
+
 module.exports = login;

@@ -7,7 +7,9 @@ const cloudinary = require(`cloudinary`).v2;
 const { CloudinaryStorage } = require(`multer-storage-cloudinary`);
 require(`dotenv`).config();
 const crypto = require(`crypto`);
+/*
 const verifiedToken = require(`../middlewares/verifyToken`);
+*/
 
 cloudinary.config({
 	cloud_name: process.env.CLOUD_NAME,
@@ -75,7 +77,7 @@ posts.post(`/posts/upload`, upload.single(`cover`), async (req, res) => {
 	}
 });
 
-posts.get(`/posts`, verifiedToken, async (req, res) => {
+posts.get(`/posts`, async (req, res) => {
 	try {
 		const posts = await PostModel.find().populate(`author`);
 		res.status(200).send({
