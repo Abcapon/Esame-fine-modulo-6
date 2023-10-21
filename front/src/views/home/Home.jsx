@@ -9,7 +9,6 @@ import useSession from "../../components/hooks/useSession";
 
 const Home = () => {
 	const session = useSession();
-	console.log(session);
 
 	return (
 		<Container fluid="sm">

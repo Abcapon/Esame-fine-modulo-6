@@ -1,4 +1,6 @@
 D2: elemento di ricerca dei post aventi "x" nel titolo
 D5: inviare e-mail quando un utente si registra e quando invia un post
-D6: registrazione utente FE; verificare se è necessario passare l'hook useSession in altre pagine
+D6: registrazione utente FE (post.authors); verificare se è necessario passare l'hook useSession in altre pagine
 controllare accessi con variabile d'ambiente
+
+D7: effettuare verifica jwt token anche nel frontend (verifica che avverrà comunque nel BE) (verify.js (BE), useSession.js)

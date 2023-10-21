@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/context/AuthContext";
 import "./styles.css";
 
 const LogIn = () => {
 	const [logInData, setLogInData] = useState({});
 	const [login, setLogin] = useState(null);
-
+	const { setIsAuthenticated } = useAuth(); // Ottieni setIsAuthenticated dal contesto
 	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
@@ -34,6 +35,9 @@ const LogIn = () => {
 			const data = await response.json();
 			if (data.token) {
 				localStorage.setItem("loggedInUser", JSON.stringify(data.token));
+
+				setIsAuthenticated(true);
+
 				navigate("/home");
 			}
 
@@ -41,6 +45,10 @@ const LogIn = () => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const redirectForLoginWithGithub = () => {
+		window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/github`;
 	};
 
 	return (
@@ -59,15 +67,21 @@ const LogIn = () => {
 					required
 				/>
 				<input
-					className="p-2  text-black rounded"
+					className="p-2 text-black rounded"
 					type="password"
 					name="password"
 					placeholder="password"
 					onChange={handleInputChange}
 					required
 				/>
-				<button type="submit" className="bg-success p-2 rounded mt-5">
+				<button type="submit" className="bg-success p-2 rounded">
 					Login
+				</button>
+				<button
+					onClick={redirectForLoginWithGithub}
+					className="bg-success p-2 rounded mt-4"
+				>
+					Login with Github
 				</button>
 			</form>
 		</div>

@@ -8,6 +8,8 @@ const postsRoute = require(`./routes/posts`);
 const commentsRoute = require(`./routes/comments`);
 const emailRoute = require(`./routes/sendEmail`);
 const loginRoute = require(`./routes/login`);
+const githubRoute = require(`./routes/github`);
+//const validateRoute = require(`./routes/verify`);
 
 //importazione cors
 const cors = require(`cors`);
@@ -36,6 +38,8 @@ app.use(`/`, postsRoute);
 app.use(`/`, commentsRoute);
 app.use(`/`, emailRoute);
 app.use(`/`, loginRoute);
+app.use(`/`, githubRoute);
+//app.use(`/`, validateRoute);
 
 // connessione al server (vedi documentazione mongoose)
 mongoose.connect(process.env.MONGODB_URL, {

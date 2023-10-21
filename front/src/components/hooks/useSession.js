@@ -9,6 +9,13 @@ export const useSession = () => {
 
 	const navigate = useNavigate();
 
+	//verifica token per accesso
+	/*
+	const validateToken = async () => {
+		const res = await fetch (`${REACT_APP_SERVER_BASE_URL}/verify`)
+	}
+	*/
+
 	useEffect(() => {
 		if (!session) {
 			navigate(`/`, { replace: true });

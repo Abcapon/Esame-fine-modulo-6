@@ -110,3 +110,9 @@ loggedInUser: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MmU4YTc4ZjAwOGI0Y
 ####
 GET http://localhost:5050/me
 loggedInUser: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MmU4YTc4ZjAwOGI0YmE0MTBhYjRhNyIsIm5vbWUiOiJQaXBwdSIsImNvZ25vbWUiOiJEZSBQaXBwdXMiLCJlbWFpbCI6ImRlcGlwcHVzQGdtYWlsLmNvbSIsImJvcm5EYXRlIjoiMTEtMDUtMTk5OSIsImF2YXRhciI6IiIsImlhdCI6MTY5NzgwNzAxMywiZXhwIjoxNjk3ODkzNDEzfQ.hT7PGYXmblRdTaI44NgsweHoYd3lXHD8j4yAf1uydSE
+
+####
+GET http://localhost:5050/logout
+
+####
+POST http://localhost:5050/verify
