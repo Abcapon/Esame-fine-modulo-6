@@ -2,8 +2,8 @@ const mongoose = require(`mongoose`);
 
 const PostSchema = new mongoose.Schema(
 	{
-		category: { type: String, default: "General" },
 		title: { type: String },
+		category: { type: String, default: "General" },
 		cover: { type: String },
 		readTime: {
 			value: { type: Number, default: 10 },

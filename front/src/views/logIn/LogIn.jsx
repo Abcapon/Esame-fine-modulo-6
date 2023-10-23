@@ -5,8 +5,9 @@ import "./styles.css";
 
 const LogIn = () => {
 	const [logInData, setLogInData] = useState({});
+	console.log(logInData);
 	const [login, setLogin] = useState(null);
-	const { setIsAuthenticated } = useAuth(); // Ottieni setIsAuthenticated dal contesto
+	const { setIsAuthenticated } = useAuth();
 	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
@@ -32,13 +33,15 @@ const LogIn = () => {
 					body: JSON.stringify(logInData),
 				}
 			);
+
 			const data = await response.json();
+
 			if (data.token) {
 				localStorage.setItem("loggedInUser", JSON.stringify(data.token));
 
 				setIsAuthenticated(true);
 
-				navigate("/home");
+				navigate(`/success/${data.token}`);
 			}
 
 			setLogin(data);

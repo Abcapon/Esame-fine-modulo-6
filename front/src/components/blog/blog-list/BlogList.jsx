@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-/*
-import posts from "../../../data/posts.json";
-registrazione 37:05
-*/
 import BlogItem from "../blog-item/BlogItem";
 
-const BlogList = (props) => {
+const BlogList = () => {
 	const [posts, setPosts] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
-	/*
-	console.log(posts);
-	*/
+
 	const getPost = async () => {
 		try {
 			const response = await fetch(

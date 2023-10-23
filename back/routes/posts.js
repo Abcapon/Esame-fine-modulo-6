@@ -40,9 +40,6 @@ const internalStorage = multer.diskStorage({
 const upload = multer({ storage: internalStorage });
 const cloudUpload = multer({ storage: cloudStorage });
 
-// di seguito chiamata post per "salvare" il file derivante dal form su cloudinary
-// per utilizzare questa chiamata lato FE dovremmo utilizzare l'end-point specificato qui (/posts/cloudinary)
-
 posts.post(
 	`/posts/cloudinary`,
 	cloudUpload.single(`cover`),
@@ -57,9 +54,6 @@ posts.post(
 		}
 	}
 );
-
-// di seguito chiamata post per "salvare" il file derivante dal form su local storage
-// per utilizzare questa chiamata lato FE dovremmo utilizzar l'end-point specificato qui (/posts/upload)
 
 posts.post(`/posts/upload`, upload.single(`cover`), async (req, res) => {
 	const url = `${req.protocol}://${req.get(`host`)}`;
@@ -113,7 +107,30 @@ posts.get(`/posts/:postId`, async (req, res) => {
 		});
 	}
 });
+posts.post("/posts", cloudUpload.single("cover"), async (req, res) => {
+	const newPost = new PostModel({
+		category: req.body.category,
+		title: req.body.title,
+		cover: req.file.path,
+		author: req.body.author,
+		content: req.body.content,
+	});
+	try {
+		const post = await newPost.save();
+		res.status(201).send({
+			statusCode: 201,
+			message: "Post saved successfully",
+			payload: post,
+		});
+	} catch (e) {
+		res.status(500).send({
+			statusCode: 500,
+			message: "Errore interno del server",
+		});
+	}
+});
 
+/*
 posts.post(`/posts`, validatePost, async (req, res) => {
 	const newPost = new PostModel({
 		category: req.body.category,
@@ -140,7 +157,7 @@ posts.post(`/posts`, validatePost, async (req, res) => {
 		});
 	}
 });
-
+*/
 posts.patch(`/posts/:postId`, async (req, res) => {
 	const { postId } = req.params;
 	const post = await PostModel.findById(postId);

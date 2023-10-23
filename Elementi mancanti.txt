@@ -4,3 +4,5 @@ D6: registrazione utente FE (post.authors); verificare se è necessario passare 
 controllare accessi con variabile d'ambiente
 
 D7: effettuare verifica jwt token anche nel frontend (verifica che avverrà comunque nel BE) (verify.js (BE), useSession.js)
+
+aggiungere logica per spostarsi alla pagina successiva e precedente (6 card per pagina)
