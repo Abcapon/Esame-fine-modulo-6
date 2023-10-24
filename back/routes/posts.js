@@ -7,9 +7,6 @@ const cloudinary = require(`cloudinary`).v2;
 const { CloudinaryStorage } = require(`multer-storage-cloudinary`);
 require(`dotenv`).config();
 const crypto = require(`crypto`);
-/*
-const verifiedToken = require(`../middlewares/verifyToken`);
-*/
 
 cloudinary.config({
 	cloud_name: process.env.CLOUD_NAME,
@@ -72,10 +69,18 @@ posts.post(`/posts/upload`, upload.single(`cover`), async (req, res) => {
 });
 
 posts.get(`/posts`, async (req, res) => {
+	const { page = 1, pageSize = 6 } = req.query;
 	try {
-		const posts = await PostModel.find().populate(`author`);
+		const posts = await PostModel.find()
+			.limit(pageSize)
+			.skip((page - 1) * pageSize)
+			.populate(`author`);
+		const totalPosts = await PostModel.count();
 		res.status(200).send({
+			currentPage: Number(page),
+			totalPages: Math.ceil(totalPosts / pageSize),
 			statusCode: 200,
+			totalPosts,
 			posts,
 		});
 	} catch (error) {
@@ -130,34 +135,6 @@ posts.post("/posts", cloudUpload.single("cover"), async (req, res) => {
 	}
 });
 
-/*
-posts.post(`/posts`, validatePost, async (req, res) => {
-	const newPost = new PostModel({
-		category: req.body.category,
-		title: req.body.title,
-		cover: req.body.cover,
-		readTime: {
-			value: Number(req.body.readTime.value),
-			unit: req.body.readTime.unit,
-		},
-		author: req.body.author,
-		content: req.body.content,
-	});
-	try {
-		const post = await newPost.save();
-		res.status(201).send({
-			statusCode: 201,
-			message: "Post saved successfully",
-			payload: post,
-		});
-	} catch (e) {
-		res.status(500).send({
-			statusCode: 500,
-			message: "Errore interno del server",
-		});
-	}
-});
-*/
 posts.patch(`/posts/:postId`, async (req, res) => {
 	const { postId } = req.params;
 	const post = await PostModel.findById(postId);

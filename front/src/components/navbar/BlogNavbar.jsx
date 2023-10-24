@@ -31,9 +31,14 @@ const NavBar = (props) => {
 						<img className="blog-navbar-brand" alt="logo" src={logo} />
 					</Navbar.Brand>
 					{isAuthenticated && (
-						<a href="/home" className="navbarLink">
-							<p>Home</p>
-						</a>
+						<div className="d-flex">
+							<a href="/home" className="navbarLink">
+								<p>Home</p>
+							</a>
+							<a href="/utente" className="navbarLink">
+								<p>Utente</p>
+							</a>
+						</div>
 					)}
 				</div>
 				{isAuthenticated && (
@@ -53,6 +58,15 @@ const NavBar = (props) => {
 							Log Out
 						</Button>
 					</div>
+				)}
+				{!isAuthenticated && (
+					<Button
+						as={Link}
+						to="/newAuthor"
+						className="blog-navbar-add-button bg-primary"
+					>
+						Registrati
+					</Button>
 				)}
 			</Container>
 		</Navbar>

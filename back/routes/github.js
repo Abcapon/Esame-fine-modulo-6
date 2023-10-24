@@ -5,6 +5,7 @@ const passport = require("passport");
 const GithubStrategy = require("passport-github2").Strategy;
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
+const AuthorModel = require(`../models/authors`);
 require("dotenv").config();
 
 gh.use(
@@ -52,6 +53,16 @@ gh.get(
 	}
 );
 
+const newAuthor = new AuthorModel({
+	nome: "Nome Predefinito",
+	cognome: "Cognome Predefinito",
+	email: "email-predefinita",
+	bornDate: "sconosciuta",
+	avatar: "",
+	password: "",
+});
+
+/*
 gh.get(
 	"/auth/github/callback",
 	passport.authenticate("github", {
@@ -64,6 +75,44 @@ gh.get(
 			token
 		)}`;
 		res.redirect(redirectUrl);
+	}
+);
+*/
+
+gh.get(
+	"/auth/github/callback",
+	passport.authenticate("github", {
+		failureRedirect: "/",
+	}),
+	async (req, res) => {
+		try {
+			let user = req.user;
+
+			// Definisci i valori predefiniti
+			const defaultUser = {
+				nome: "Nome Predefinito",
+				cognome: "Cognome Predefinito",
+				email: "email-predefinita",
+				bornDate: "sconosciuta",
+				avatar: "",
+				password: "",
+			};
+
+			// Sovrascrivi le chiavi mancanti in 'user' con i valori predefiniti
+			user = { ...defaultUser, ...user };
+
+			const token = jwt.sign(user, process.env.JWT_SECRET);
+			const redirectUrl = `http://localhost:3000/success/${encodeURIComponent(
+				token
+			)}`;
+			res.redirect(redirectUrl);
+		} catch (error) {
+			console.error(
+				"Errore durante la gestione dell'autenticazione con GitHub:",
+				error
+			);
+			res.redirect("/"); // Reindirizza a una pagina di errore o altrove in caso di errore
+		}
 	}
 );
 

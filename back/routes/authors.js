@@ -1,6 +1,3 @@
-// questo file è stato creato per gestire le route, affinchè non vengano tutte inserite all'interno del file principale (server.js),
-//in questa maniera sarà tutto più organizzato
-
 const express = require(`express`);
 const authors = express.Router();
 
@@ -95,7 +92,7 @@ authors.get(`/authors/:authorId`, async (req, res) => {
 });
 
 // creazione di un autore (chiamata post)
-authors.post(`/authors`, async (req, res) => {
+authors.post(`/authors`, cloudUpload.single("avatar"), async (req, res) => {
 	const salt = await bcrypt.genSalt(10);
 	const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -104,7 +101,7 @@ authors.post(`/authors`, async (req, res) => {
 		cognome: req.body.cognome,
 		email: req.body.email,
 		bornDate: req.body.bornDate,
-		avatar: req.body.avatar,
+		avatar: req.file.path,
 		password: hashedPassword,
 	});
 	try {

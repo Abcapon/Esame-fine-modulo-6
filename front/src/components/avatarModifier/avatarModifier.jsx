@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import useSession from "../../components/hooks/useSession";
+import { useNavigate } from "react-router-dom";
 
 const AvatarModifier = () => {
-	const [formData, setFormData] = useState({
-		authorId: "",
-	});
+	const decodedSession = useSession();
+	const navigate = useNavigate();
+
+	const userId = decodedSession.id;
 
 	const [avatar, setAvatar] = useState(null);
 
@@ -13,9 +16,8 @@ const AvatarModifier = () => {
 
 	const handleUploadFile = async (e) => {
 		e.preventDefault();
-		const authorId = formData.authorId;
 
-		if (!authorId) {
+		if (!userId) {
 			console.log("Inserisci l'ID dell'autore.");
 			return;
 		}
@@ -27,36 +29,25 @@ const AvatarModifier = () => {
 
 		const fileData = new FormData();
 		fileData.append("avatar", avatar);
-		console.log("fileData:", fileData);
 
 		try {
 			const response = await fetch(
-				`http://localhost:5050/authors/${authorId}/avatar`,
+				`http://localhost:5050/authors/${userId}/avatar`,
 				{
 					method: "PATCH",
 					body: fileData,
 				}
 			);
 			const uploadResult = await response.json();
+			navigate(`/home`);
 			console.log("Upload Result:", uploadResult);
 		} catch (error) {
 			console.error("Errore durante il caricamento del file:", error);
 		}
 	};
 
-	const handleInputChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-	};
-
 	return (
 		<form encType="multipart/form-data" onSubmit={handleUploadFile}>
-			<input
-				type="text"
-				name="authorId"
-				placeholder="ID dell'autore"
-				value={formData.authorId}
-				onChange={handleInputChange}
-			/>
 			<input
 				type="file"
 				onChange={handleFileChange}

@@ -9,9 +9,7 @@ const BlogAuthor = (props) => {
 			<Col xs={"auto"} className="pe-0">
 				<Image className="blog-author" src={avatar} roundedCircle />
 			</Col>
-			<Col>
-				<div>di: {nome}</div>
-			</Col>
+			<Col>di: {nome}</Col>
 		</Row>
 	);
 };

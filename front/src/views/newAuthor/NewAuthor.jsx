@@ -1,41 +1,38 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "./styles.css";
 import { Link } from "react-router-dom";
-import useSession from "../../components/hooks/useSession";
 import { useNavigate } from "react-router-dom";
 
-const NewBlogPost = (props) => {
+const NewAuthor = () => {
 	const navigate = useNavigate();
-	const decodedSession = useSession();
-	const userId = decodedSession.id;
 
 	const [formData, setFormData] = useState({
-		title: "",
-		category: "",
-		content: "",
+		nome: "",
+		cognome: "",
+		email: "",
+		bornDate: "",
+		password: "",
 	});
 
-	const [cover, setCover] = useState(null);
+	const [avatar, setAvatar] = useState(null);
 
 	const handleFileChange = (e) => {
-		setCover(e.target.files[0]);
+		setAvatar(e.target.files[0]);
 	};
 
 	const handleUpload = async (e) => {
 		e.preventDefault();
 		const fileData = new FormData();
-		fileData.append("cover", cover);
-		fileData.append("title", formData.title);
-		fileData.append("category", formData.category);
-		fileData.append("content", formData.content);
-		fileData.append("author", userId);
+		fileData.append("avatar", avatar);
+		fileData.append("nome", formData.nome);
+		fileData.append("cognome", formData.cognome);
+		fileData.append("email", formData.email);
+		fileData.append("bornDate", formData.bornDate);
+		fileData.append("password", formData.password);
 
 		try {
 			const response = await fetch(
-				`${process.env.REACT_APP_SERVER_BASE_URL}/posts`,
+				`${process.env.REACT_APP_SERVER_BASE_URL}/authors`,
 				{
 					method: "POST",
 					body: fileData,
@@ -43,11 +40,11 @@ const NewBlogPost = (props) => {
 			);
 
 			if (response.ok) {
-				const newPost = await response.json();
+				const newAuthor = await response.json();
 				navigate(`/home`);
-				console.log("Post creato con successo:", newPost);
+				console.log("Autore creato con successo:", newAuthor);
 			} else {
-				console.error("Errore durante il caricamento del post");
+				console.error("Errore durante il caricamento dell'autore");
 			}
 		} catch (error) {
 			console.log("Errore durante il caricamento del file:", error);
@@ -62,41 +59,58 @@ const NewBlogPost = (props) => {
 		<Container className="new-blog-container">
 			<Form onSubmit={handleUpload} className="mt-5">
 				<Form.Group controlId="blog-form" className="mt-3">
-					<Form.Label>Titolo</Form.Label>
+					<Form.Label>Nome</Form.Label>
 					<Form.Control
 						type="text"
-						name="title"
-						value={formData.title}
+						name="nome"
+						value={formData.nome}
 						onChange={handleInputChange}
 						size="lg"
-						placeholder="Title"
+						placeholder="Nome"
 					/>
 				</Form.Group>
-				<Form.Group controlId="blog-category" className="mt-3">
-					<Form.Label>Categoria</Form.Label>
-					<Form.Control
-						as="select"
-						size="lg"
-						name="category"
-						value={formData.category}
-						onChange={handleInputChange}
-					>
-						<option>Romanzo</option>
-						<option>Thriller</option>
-						<option>Horror</option>
-						<option>Drammatico</option>
-						<option>Musical</option>
-					</Form.Control>
-				</Form.Group>
 				<Form.Group controlId="blog-form" className="mt-3">
-					<Form.Label>Contenuto Blog</Form.Label>
+					<Form.Label>Cognome</Form.Label>
 					<Form.Control
 						type="text"
-						name="content"
-						value={formData.content}
+						name="cognome"
+						value={formData.cognome}
 						onChange={handleInputChange}
 						size="lg"
-						placeholder="Contenuto Blog"
+						placeholder="Cognome"
+					/>
+				</Form.Group>
+				<Form.Group controlId="blog-form" className="mt-3">
+					<Form.Label>Cognome</Form.Label>
+					<Form.Control
+						type="date"
+						name="bornDate"
+						value={formData.bornDate}
+						onChange={handleInputChange}
+						size="lg"
+						placeholder="Data di nascita"
+					/>
+				</Form.Group>
+				<Form.Group controlId="blog-form" className="mt-3">
+					<Form.Label>Email</Form.Label>
+					<Form.Control
+						type="text"
+						name="email"
+						value={formData.email}
+						onChange={handleInputChange}
+						size="lg"
+						placeholder="Email"
+					/>
+				</Form.Group>
+				<Form.Group controlId="blog-form" className="mt-3">
+					<Form.Label>Password</Form.Label>
+					<Form.Control
+						type="text"
+						name="password"
+						value={formData.password}
+						onChange={handleInputChange}
+						size="lg"
+						placeholder="Password"
 					/>
 				</Form.Group>
 				<Form.Group className="position-relative mb-3">
@@ -124,4 +138,4 @@ const NewBlogPost = (props) => {
 	);
 };
 
-export default NewBlogPost;
+export default NewAuthor;
